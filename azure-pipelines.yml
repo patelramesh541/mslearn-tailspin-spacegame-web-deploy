@@ -1,7 +1,8 @@
 trigger:
 - '*'
 
-pool:  
+pool: 
+  name: 'Default'
   vmImage: 'windows-latest'
 steps:
   - script: echo hello from Windows
