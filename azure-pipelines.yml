@@ -26,20 +26,19 @@ stages:
         version: '$(dotnetSdkVersion)'
 
     - task: Npm@1
-      displayName: 'Run npm install'
-      inputs:
-        verbose: false
-
-    - script: './node_modules/.bin/node-sass $(wwwrootDir) --output $(wwwrootDir)'
-      displayName: 'Compile Sass assets'
-    
-    - task: Npm@1
       displayName: 'Install Gulp CLI Globally'
       inputs:
         command: custom
         customCommand: 'install -g gulp-cli'
         workingDir: '$(Build.SourcesDirectory)'
         verbose: false
+
+    - task: gulp@1
+      displayName: 'Run gulp tasks'
+
+    - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
+      displayName: 'Write build info'
+      workingDirectory: $(wwwrootDir)
 
     - task: DotNetCoreCLI@2
       displayName: 'Restore project dependencies'
